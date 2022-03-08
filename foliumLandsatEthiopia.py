@@ -9,6 +9,7 @@ ee.Authenticate()
 # Initialize the library.
 ee.Initialize()
 
+
 countries = ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017')
 Ethiopia = countries.filter(ee.Filter.eq('country_na', 'Ethiopia'))
 landsat = ee.ImageCollection(
@@ -41,3 +42,9 @@ my_map.add_ee_layer(composite, nirVis, 'false Color')
 my_map.add_child(folium.LayerControl())
 
 display(my_map)
+task = ee.batch.Export.image.toDrive(**{'image': my_map,
+                                        'description': 'imagetoDrive_L8',
+                                        'folder': 'ExampleEarthEngine',
+                                        'scale': 30}
+                                     )
+task.start()
